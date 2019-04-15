@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>layui</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+       <link rel="stylesheet" href="/static/libs/layui/css/layui.css">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+
+<body>
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend>表单集合演示</legend>
+</fieldset>
+<form class="layui-form" action="" lay-filter="userform">
+   #(list)
+   <div class="layui-form-item">
+    <label class="layui-form-label">验证必填项</label>
+    <div class="layui-input-block">
+      <input type="text" name="username"  placeholder="请输入" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+   <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">验证邮箱</label>
+      <div class="layui-input-inline">
+        <input type="text" name="email"  autocomplete="off" class="layui-input">
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">验证日期</label>
+      <div class="layui-input-inline">
+        <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+   </div>
+   
+    <div class="layui-form-item"> 
+     <div class="layui-inline">
+      <label class="layui-form-label">搜索选择框</label>
+      <div class="layui-input-inline">
+        <select name="modules" lay-verify="required" lay-search="">
+          <option value="">直接选择或搜索选择</option>
+          <option value="1">layer</option>
+          <option value="2">form</option>
+          <option value="3">layim</option>
+          <option value="4">element</option>
+          <option value="5">laytpl</option>
+          <option value="6">upload</option>
+          <option value="7">laydate</option>
+          <option value="8">laypage</option>
+          <option value="9">flow</option>
+          <option value="10">util</option>
+          <option value="11">code</option>
+          <option value="12">tree</option>
+          <option value="13">layedit</option>
+          <option value="14">nav</option>
+          <option value="15">tab</option>
+          <option value="16">table</option>
+          <option value="17">select</option>
+          <option value="18">checkbox</option>
+          <option value="19">switch</option>
+          <option value="20">radio</option>
+        </select>
+      </div>
+    </div>
+</div>
+ 
+
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+    <!-- layui button 会默认指定type为"submit" 若不自动提交需要指定type -->
+      <button type="button" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+      <a href="javascript:loadingtable()"><button   type="button"  class="layui-btn layui-btn-xs layui-btn-danger .demo-delete">提交</button></a>
+    </div>
+  </div>
+  </form>
+ <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend>以下是弹出层 Demo</legend>
+</fieldset>
+
+<!--  layui 弹出层可直接参考layer,官网http://layer.layui.com/-->
+<div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
+	<button data-method="openDiv" class="layui-btn"> 点我弹出页面层</button>
+	<button data-method="openiframe" class="layui-btn"> 点我弹出iframe层</button>
+</div>
+  
+  <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend>以下是Table Demo</legend>
+</fieldset>
+ <!-- 方法渲染 -->
+  <table class="layui-hide" id="test" lay-filter="test"></table>
+  
+  <!-- 自动渲染 -->
+<table class="layui-table" lay-data="{url:'#(path)/demo/getDemo1List2', page:true, id:'test2',toolbar: '#toolbarDemo'}" lay-filter="test2">
+  <thead>
+    <tr>
+      <th lay-data="{type: 'checkbox', fixed: 'left'}">ID</th>
+      <th lay-data="{field:'id'}">id</th>
+      <th lay-data="{field:'url',sort: true}">url</th>
+      <th lay-data="{field:'data,sort: true}">data</th>
+    <!-- 如果以Model返回，则user_name 会转换成username，若用record返回，user_name不变。 -->
+      <th lay-data="{field:'method_name'}">methodName</th>
+      <th lay-data="{field:'create_time'}">createTime</th>
+      <th lay-data="{field:'remark'}">remark</th>
+      <th lay-data="{field:'right'，toolbar: '#barDemo'}">操作</th>
+      <th lay-data="{fixed: 'right', width:150, align:'center', toolbar: '#barDemo'}">操作</th>
+    </tr>
+  </thead>
+</table>
+  
+  <script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+  </div>
+</script>
+  <script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+  
+ <!-- 虽然layui包含有jq，但是还是需要手动导入jq，否则无法使用ajax请求。或者是项目前有两个jq版本问题引起 -->
+<script src="#(path)/static/libs/jquery/jquery-2.1.4.min.js?t=#now()" type="text/javascript" ></script>               
+<script src="/static/libs/layui/layui.js"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 --> 
+
+<script>
+layui.use(['form', 'layedit', 'laydate'], function(){
+  var form = layui.form
+  ,layer = layui.layer
+  ,layedit = layui.layedit
+  ,laydate = layui.laydate;
+  //日期
+  laydate.render({
+    elem: '#date'
+  });
+  //监听弹出事件
+  $('#layerDemo .layui-btn').on('click', function(){
+	    var othis = $(this), method = othis.data('method');
+	    active[method] ? active[method].call(this, othis) : '';
+	  });
+  var active = {
+		  openDiv: function(){
+			  layer.open({
+				  type: 1,
+				  skin: 'layui-layer-rim', //加上边框
+				  area: ['420px', '240px'], //宽高
+				  content: 'html内容'
+				});
+		    },
+         openiframe: function(){
+        		    layer.open({
+        		      type: 2,
+        		      title: '很多时候，我们想最大化看，比如像这个页面。',
+        		      shadeClose: true,
+        		      shade: false,
+        		      maxmin: true, //开启最大化最小化按钮
+        		      area: ['893px', '600px'],
+        		      content: '/demo'
+        		    });
+	        }
+ };
+		  
+
+  
+  
+  //监听提交
+  form.on('submit(demo1)', function(data){ 
+     $.ajax({   
+	                  url:'/demo/save',       
+	                  method:'post',       
+	                  data:data.field,        
+	                  dataType:'JSON', 
+	  success:function(data){
+		  console.log(data);
+		  alert(data.msgss);
+		  alert(eval(data.demo1).username);
+
+		  form.val('userform', {
+			    "username": "贤心" // "name": "value"
+			    ,"email": "XX@qq.com"
+			  })
+		  
+	  } 
+    });   
+  });
+
+
+});
+</script>
+
+<script>
+layui.use('table', function(){
+  var table = layui.table;
+  table.render({
+    elem: '#test'
+    ,url:'#(path)/demo/getDemo1List'
+    ,toolbar: '#toolbarDemo'
+    ,title: '用户数据表'
+    ,where:{userName:'aaaa'}
+  //如果以Model返回，则user_name 会转换成username，若用record返回，user_name不变。
+    ,cols: [[
+    	 {type: 'checkbox', fixed: 'left'}
+    	, {field:'username',title: 'username', sort: true}
+         ,{field:'email', title: 'email'}
+         ,{field:'date', title: 'date'}
+         ,{field:'modules',  title: 'modules', sort: true}
+         ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+    ]]
+    ,page: true
+  });
+  
+  //头工具栏事件
+  table.on('toolbar(test)', function(obj){
+    var checkStatus = table.checkStatus(obj.config.id);
+    switch(obj.event){
+      case 'getCheckData':
+        var data = checkStatus.data;
+        layer.alert(JSON.stringify(data));
+      break;
+      case 'getCheckLength':
+        var data = checkStatus.data;
+        layer.msg('选中了：'+ data.length + ' 个');
+      break;
+      case 'isAll':
+        layer.msg(checkStatus.isAll ? '全选': '未全选');
+      break;
+    };
+  });
+  
+  //监听行工具事件
+  table.on('tool(test)', function(obj){
+    var data = obj.data;
+    //console.log(obj)
+    if(obj.event === 'del'){
+      layer.confirm('真的删除行么', function(index){
+        obj.del();
+        layer.close(index);
+      });
+    } else if(obj.event === 'edit'){
+      layer.prompt({
+        formType: 2
+        ,value: data.username
+      }, function(value, index){
+        obj.update({
+          email: value
+        });
+        layer.close(index);
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>
