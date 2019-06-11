@@ -93,4 +93,3 @@
 	select link_page 'url' from sys_function where link_page is not null
 #end
 
-

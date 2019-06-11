@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="utf-8">
+  <title>Logical Manager</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/static/libs/layui/css/layui.css?t=#now()">
+  <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+   	<a class="layui-btn layui-btn-xs" style="
+		{{(d.STATUS=='CLOSED')? 'visibility: hidden;' : ' ' }}" 
+		lay-event="edit" 	 
+		>接货</a>
+</script>
+<script type="text/html" id="barDemo2">
+   	<a class="layui-btn layui-btn-xs" style="
+		{{(d.STATUS=='CLOSED')? 'visibility: hidden;' : ' ' }}" 
+		lay-event="edit" 	 
+		>接货</a>
+</script>
+
+<body class="layui-layout-body" style="background-color: #f3f3f4; overflow-x: hidden;overflow-y: auto;">
+<div class="layui-fluid">
+<div class="layui-row"  >
+     <div class="layui-col-xs6 layui-col-md12"  style="background:#fff;border-radius:6px;padding-bottom:0px;box-shadow:1px 1px 3px rgba(0,0,0,.2);margin-top:3px;">
+           <form class="layui-form-item" style="margin: 5px 5px 0px 5px;" id ="searchCont"   action="">
+			           <div class="layui-input-inline">
+			            <select name="Center" class="layui-input"  id="Center" lay-search>
+							<option value="BD095F0C-0A86-FAF5-0276-C74B93A46D65">HP BPC</option>
+							<option value="BD095F0C-0A86-FAF5-0176-C74B93A46D62">HP CPC</option>
+							<option value="BD085F0B-0A86-FAF5-0176-C74B93A46E39">LENOVO</option>
+						</select>
+					  </div>
+					 <div class="layui-input-inline">
+		         		  <input type="search" name="SerialNo"  id="SerialNo"  autocomplete="off" class="layui-input" placeholder="序号/SN"/>
+		             </div>
+		              <div class="layui-input-inline">
+		           		<input type="search" name="RMANo"  id="RMANo" autocomplete="off" class="layui-input" placeholder="返修RMA  No."/>
+		           	  </div>
+		           	 <div class="layui-input-inline">
+			           <select name="Status"   id="Status"   class="layui-input" lay-search>
+							<option value="">---状态/Status---</option>
+								<option value="Pending">Pending</option>
+							<option value="Import">Import</option>
+							<option value="Finish">Finish</option>
+						</select>
+					 </div>
+					 <button class="layui-btn" onclick="return false;" data-type="reload"  id="searchTem">查询</button>
+			</form>
+			  <table class="layui-hide" id="searchForm" lay-filter="ClosDetail"></table>
+			
+    </div>
+    <div class="layui-col-xs12 layui-col-md6"  >
+      <div class="grid-demo grid-demo-bg1" style="background:#fff;border-radius:6px;padding-bottom:13px;box-shadow:1px 1px 3px rgba(0,0,0,.2);margin:10px 3px  0px  0px ;"  id="accordion1">
+        <fieldset class="layui-elem-field"  style="margin: 10px; ">
+		  <legend>进口表单信息</legend>
+		  <div class="layui-field-box" style="padding: 0px 0px;">
+		          <form class="layui-form" action="" >
+				      <div class="layui-form-item"  style="margin-bottom:5px;">
+					    <label class="layui-form-label" >验证必填项</label>
+					    <div class="layui-input-block" >
+					      <input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+					    </div>
+					  </div>
+					<div class="layui-form-item"  style="margin-bottom:5px;">
+		              <div class="layui-inline"  style="margin-right: 2px;">
+					      <label class="layui-form-label">验证手机</label>
+					      <div class="layui-input-inline" style="width: 100px;">
+					        <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+					      </div>
+					    </div>
+					    <div class="layui-inline"  style="margin-right: 2px;">
+					      <label class="layui-form-label">验证邮箱</label>
+					      <div class="layui-input-inline" style="width: 100px;">
+					        <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+					      </div>
+					    </div>
+					  </div>
+		          	<div class="layui-form-item"  style="margin-bottom:5px;">
+		              <div class="layui-inline"  style="margin-right: 2px;">
+					      <label class="layui-form-label">验证手机</label>
+					      <div class="layui-input-inline" style="width: 100px;">
+					        <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+					      </div>
+					    </div>
+					    <div class="layui-inline"  style="margin-right: 2px;">
+					      <label class="layui-form-label">验证邮箱</label>
+					      <div class="layui-input-inline" style="width: 100px;">
+					        <input type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+					      </div>
+					    </div>
+					    <button class="layui-btn"  lay-submit=""  lay-filter="searchForm2">查询</button>
+					  </div>
+		       </form>
+		  </div>
+		</fieldset>
+		    <table class="layui-hide" id="packList" lay-filter="packlist"></table>
+      </div>
+    </div>
+    <div class="layui-col-xs6 layui-col-md6"   >
+      <div class="grid-demo" style="background:#fff;border-radius:6px;padding-bottom:13px;box-shadow:1px 1px 3px rgba(0,0,0,.2);margin:10px 0px  0px  3px ; " id="accordion2">
+        <fieldset class="layui-elem-field layui-field-title" >
+		  <legend style="padding-bottom: 20px;">包装明细</legend>
+					     <div class="layui-input-inline"  style="margin-left: 20px;">
+		         		  <input type="search" name="userName" autocomplete="off" class="layui-input" placeholder="用户名/姓名"  style="width: 300px;"/>
+		                 </div>
+					    <button class="layui-btn">查询</button>
+		</fieldset>
+      </div>
+    </div>
+  </div>
+ </div>
+ 
+ <!-- 虽然layui包含有jq，但是还是需要手动导入jq，否则无法使用ajax请求。或者是项目前有两个jq版本问题引起 -->
+<script src="#(path)/static/libs/jquery/jquery-2.1.4.min.js?t=#now()" type="text/javascript" ></script>  
+<script src="/static/libs/layui/layui.js?t=#now()"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 --> 
+<script>
+$(function(){
+	var height=$(window).height()-315;
+	$("#accordion1").css("min-height",height);
+	$("#accordion2").css("min-height",height);
+})
+
+layui.use(['form', 'table'], function(){
+	  var   table = layui.table 
+	  ,form = layui.form
+	  
+	  
+	  $('#searchTem').on('click', function(){
+		  var Center = $('#Center').val();
+		  var SerialNo = $('#SerialNo').val();
+		  var RMANo = $('#RMANo').val();
+		  var Status = $('#Status').val();
+		  table.reload('searchForm', {
+			     where :  {sflag:'Y',Center:Center,SerialNo:SerialNo,RMANo:RMANo,Status:Status}
+				  });
+		  });
+	   
+	  //执行一个 table 实例
+	  table.render({
+		    elem: '#searchForm'
+		    ,url: '/portal/rmaImport/searchList'
+		    ,title: 'ServiceDetail'
+		    ,id:'searchForm'
+	        ,height:220
+		    ,page: true //开启分页
+		   // ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+		    ,cols: [[ //表头
+		       {type: 'checkbox', fixed: 'left'}
+		      ,{field: 'SERVICE_NO', title: 'service no', sort: true}
+		      ,{field: 'REPAIR_NO', title: 'RMA#', sort: true}
+		      ,{field: 'IMPORT_STATUS', title: 'status',sort: true,templet: '#packLists' }
+		      ,{field: 'CUSTOMER_NAME', title: 'customer name', sort: true}
+		      ,{field: 'REPAIR_TYPE', title: 'repair  type', sort: true}
+		      ,{field: 'APPLY_QTY', title: 'apply qty',  sort: true}
+		      ,{field: 'CREATOR', title: ' creator' }
+		      ,{field: 'CREATE_DATE', title: 'create date'}
+		      ,{fixed: 'right', title: 'Action', align:'center', toolbar: '#barDemo'}
+		    ]]
+	  
+		  });
+	   
+	   
+	 });   
+</script>
+<script>
+function loadPacklist(id){
+		layui.use([ 'table'], function(){
+				  var   table = layui.table 
+				  //执行一个 table 实例
+				  table.render({
+				    elem: '#packList'
+				    ,url: '/portal/logical/ServiceDetail'
+				    ,title: 'ServiceDetail'
+				    ,id:'packList'
+//			      ,height:220
+				    ,page: true //开启分页
+//				   ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+				    ,cols: [[ //表头
+				       {type: 'checkbox', fixed: 'left'}
+				      ,{field: 'SERIAL_NO', title: 'ID', sort: true}
+				      ,{field: 'STATUS', title: 'STATUS',sort: true,templet: '#scanList' }
+				      ,{field: 'UPDATE_DATE', title: 'UPDATE_DATE', sort: true}
+				      ,{field: 'WARRANTY', title: 'WARRANTY',  sort: true}
+				      ,{field: 'CUSTOMER_PROBLEM', title: 'CUSTOMER_PROBLEM' }
+				      ,{fixed: 'right', title: 'Action', align:'center', toolbar: '#barDemo2'}
+				    ]]
+				 
+				  });
+			}); 
+		}
+</script>
+<script type="text/html" id="packLists">
+<a   href="javascript:loadPacklist('{{d.ID}}')" 	 class="layui-table-link" >{{ d.STATUS }}</a>
+</script>
+<script type="text/html" id="scanList">
+<a   href="javascript:loadPacklist('{{d.ID}}')" 	 class="layui-table-link" >{{ d.STATUS }}</a>
+</script>
+</body>
+</html>

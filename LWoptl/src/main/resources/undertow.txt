@@ -1,8 +1,9 @@
 # 配置 undertow
 
 undertow.devMode=true
-undertow.host=localhost
-undertow.port=802
+undertow.host=10.202.86.138
+#undertow.host=localhost
+undertow.port=803
 
 # 开启 gzip 压缩
 undertow.gzip.enable=true

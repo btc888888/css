@@ -1,17 +1,24 @@
 #主要配置
 dbType=mysql
-jdbcUrl=jdbc:mysql://localhost:3306/CSS?characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull
-user=root
-password=liyujie
+jdbcUrl=jdbc:mysql://10.202.86.138:3306/CSS?characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull
+ModelName=root
+ModeWW=liyujie
 devMode=true
 engineDevMode=true
 
+#配置oracle数据库
+dbType2=oracle
+oracle.driver=oracle.jdbc.OracleDriver
+oracle.url=jdbc:oracle:thin:@10.157.136.171:1526:eservice
+oracle.ModelName=eservice_dev
+oracle.ModeWW=foxesdev
+
 #业务配置
-projectName=Cloud Smart Service
+projectName=Service Leopards
 baseUploadPath=WEB-INF/temp/upload
 baseDownloadPath=WEB-INF/temp/download
 copyright=ITSS-Service-SSC
 
-
+ 
 
 

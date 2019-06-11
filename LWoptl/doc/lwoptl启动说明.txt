@@ -1,0 +1,32 @@
+1、创建数据库：执行lwoptl.sql文件
+
+2、修改config-dev.txt数据库配置参数
+
+3、运行com.lwoptl.common.config.MainConfig.java的main方法即可，
+     若端口占用问题，可修改undertow.txt相关参数
+      
+
+5、特别提醒：通过start.bat、start.sh启动项目时，需要把项目源码的jfinal-layui-1.0.jar复制一份到target\lwoptl-release\lwoptl\webapp\WEB-INF\lib目录下，
+      同时把devMode的值改成false，否则404错误，这个是因为用@ControllerBind注解路由的问题，开发环境可以忽略
+      
+
+打包部署到服务器：
+1：命令行进入项目根目录，然后运行 mvn clean package 即可打包 
+2：打包完后，进入 \LWoptl\target\lwoptl-release\lwoptl 目录，
+3：windows 下双击 start.bat 启动项目，
+	linux 下运行 start.sh 脚本启动项目， 运行 stop.sh 关闭项目 
+:
+注意LWoptl\target 目录下面还会有一个lwoptl-release.zip 文件
+	只需要把lwoptl-release.zip拷贝到服务器，然后解压运行即可。
+	
+如果出现404问题处理步骤：
+1、把devMode的值改成false，
+2、把项目源码的jfinal-layui-1.0.jar复制一份到target\lwoptl-release\lwoptl\webapp\WEB-INF\lib目录下，
+3、确保MainConfig配置的这行代码，打包部署要是为true
+	autoBindRoutes.includeAllJarsInLib(!p.getBoolean("devMode"));
+	
+	ojdbc 驱动包mvn管理：
+	
+1.下载ojdbc包，并确认版本
+2.mvn下载到本地仓库：mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.4.0 -Dpackaging=jar -Dfile=ojdbc6.jar 
+3.mvn管理

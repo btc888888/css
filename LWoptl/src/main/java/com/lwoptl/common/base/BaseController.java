@@ -187,7 +187,8 @@ public class BaseController extends Controller {
 	}
 	@NotAction
 	public String saveFile(UploadFile uploadFile, String objectId) {
-		return fileService.saveFile(uploadFile, objectId);
+		Visitor vs = VisitorUtil.getVisitor(getSession());
+		return fileService.saveFile(uploadFile, objectId,vs.getCode() + "/" +  vs.getName());
 	}
 	@NotAction
 	public List<String> saveFiles(List<UploadFile> list) {
@@ -195,7 +196,8 @@ public class BaseController extends Controller {
 	}
 	@NotAction
 	public List<String> saveFiles(List<UploadFile> list, String objectId) {
-		return fileService.saveFiles(list,objectId);
+		Visitor vs = VisitorUtil.getVisitor(getSession());
+		return fileService.saveFiles(list,objectId,vs.getCode() + "/" +  vs.getName());
 	}
 
 	/**

@@ -22,6 +22,7 @@ public class _MappingKit {
 		arp.addMapping("file_uploaded", "id", FileUploaded.class);
 		arp.addMapping("logic_form", "id", LogicForm.class);
 		arp.addMapping("logic_item", "id", LogicItem.class);
+		arp.addMapping("logic_timeline", "id", LogicTimeline.class);
 		arp.addMapping("sys_function", "id", SysFunction.class);
 		arp.addMapping("sys_log", "id", SysLog.class);
 		arp.addMapping("sys_org", "id", SysOrg.class);

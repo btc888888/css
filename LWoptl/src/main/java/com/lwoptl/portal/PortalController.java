@@ -91,6 +91,10 @@ public class PortalController extends BaseController {
 	 */
 	public void delete() {
 		String url = getAttr("url", "");
+		System.out.println("url-+++-->"+url);
+		if("".equals(url))
+	    url = getPara("url");
+		System.out.println("url--->"+url);
 		if (url.contains("/")) {
 			deleteFileByUrl(url);
 		} else {

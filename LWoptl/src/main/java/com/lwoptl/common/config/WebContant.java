@@ -17,9 +17,9 @@ public class WebContant {
 	/** 项目名称 **/
 	public static String projectName=PropKit.get("projectName","LH-APS");
 	/** 上传目录 **/
-	public static String baseUloadPath=PropKit.get("baseUploadPath","WEB-INF/temp/upload");
+	public static String baseUloadPath=PropKit.get("baseUploadPath","D:/temp/upload");
 	/** 下载目录 **/
-	public static String baseDownloadPath=PropKit.get("baseDownloadPath","WEB-INF/temp/download");
+	public static String baseDownloadPath=PropKit.get("baseDownloadPath","D:/temp/download");
 
 	/** 上传最大限制 **/
 	public static Integer maxPostSize=1024*1024*100;

@@ -8,4 +8,8 @@
 	#include("core.sql")
 #end
 
+#namespace("import")
+	#include("import.sql")
+#end
+
 

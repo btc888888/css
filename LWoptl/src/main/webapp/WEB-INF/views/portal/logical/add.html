@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="uft-8">
+<title>add function</title>
+  <link rel="stylesheet" href="/static/libs/layui/css/layui.css?t=#now()">
+</head>
+<body>
+ <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <legend> #(funName)</legend>
+</fieldset>
+<form class="layui-form" action="" lay-filter="logicForm" style="margin-right: 20px;">
+      <input type="hidden" name="item_id"  value="#(pid)" >
+       <input type="hidden" name="name"  value="#(funName)" >
+        <input type="hidden" name="id"  value="#(logicForm.id??)" >
+	  <div class="layui-form-item">
+	    <label class="layui-form-label">*字段名</label>
+	    <div class="layui-input-block">
+	      <input type="text" name="column"  lay-verify = "required"  placeholder="请输入栏位字段" autocomplete="off" class="layui-input"  value="#(logicForm.column??)">
+	    </div>
+	  </div>
+	    <div class="layui-form-item">
+		    <label class="layui-form-label">*存储位置</label>
+		    <div class="layui-input-block">
+		      <input type="text" name="db_colmn"  lay-verify = "required"  placeholder="请输入存储位置" autocomplete="off" class="layui-input" value="#(logicForm.db_colmn??)">
+		    </div>
+		  </div>
+		  <div class="layui-form-item">
+		    <label class="layui-form-label">*数据来源</label>
+		    <div class="layui-input-block">
+		      <input type="text" name="data_from"  lay-verify = "required"  placeholder="请输入数据来源" autocomplete="off" class="layui-input" value="#(logicForm.data_from??)">
+		    </div>
+		  </div>
+		  <div class="layui-form-item layui-form-text">
+		    <label class="layui-form-label">*操作逻辑说明</label>
+		    <div class="layui-input-block">
+		      <textarea   name="logic"   lay-verify = "required"    placeholder="请输入内容" class="layui-textarea" >#(logicForm.logic??)</textarea>
+		    </div>
+		  </div>
+	         <div class="layui-form-item">
+		    <label class="layui-form-label">*数据去向(作用)</label>
+		    <div class="layui-input-block">
+		      <input type="text" name="data_to"  lay-verify = "required"  placeholder="数据去向(作用)" autocomplete="off" class="layui-input"  value=" #(logicForm.data_to??)">
+		    </div>
+		  </div>
+		    <div class="layui-form-item layui-form-text">
+			    <label class="layui-form-label">备注</label>
+			    <div class="layui-input-block">
+			      <textarea   name="memo"   placeholder="请输入内容" class="layui-textarea" >#(logicForm.memo??)</textarea>
+			    </div>
+			  </div>
+  
+	    <div class="layui-form-item">
+		    <div class="layui-input-block">
+		      #if(logicForm == null)
+		      <button type="button" class="layui-btn" lay-submit="" lay-filter="add" >提交新增</button>
+		      #end
+		       #if(logicForm != null)
+		      <button type="button" class="layui-btn" lay-submit="" lay-filter="update">提交变更</button>
+		      #end
+		      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+	    </div>
+	  </div>
+</form>
+</body>
+<script src="#(path)/static/libs/jquery/jquery-2.1.4.min.js?t=#now()" type="text/javascript" ></script>  
+<script src="/static/libs/layui/layui.js?t=#now()"></script>
+<script>
+layui.use(['form', 'layedit'], function(){
+  var form = layui.form
+  ,layedit = layui.layedit;
+  
+  var index = parent.layer.getFrameIndex(window.name);
+  //监听提交
+  form.on('submit(add)', function(data){ 
+     $.ajax({   
+	                  url:'/portal/logical/save',       
+	                  method:'post',       
+	                  data:data.field,        
+	                  dataType:'JSON', 
+	  success:function(data){
+		  parent.reloadTable('colListShow');
+		  parent.layer.msg("保存数据成功!");
+		  parent.layer.close(index);
+	  } 
+    });   
+  });
+
+  form.on('submit(update)', function(data){ 
+	     $.ajax({   
+		                  url:'/portal/logical/updateSave',       
+		                  method:'post',       
+		                  data:data.field,        
+		                  dataType:'JSON', 
+		  success:function(data){
+			  layer.msg("变更成功!");
+			  parent.reloadTable('colListShow');
+		  } 
+	    });   
+  });
+  
+});
+</script>
+
+</html>

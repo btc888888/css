@@ -13,6 +13,8 @@ import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 import com.lwoptl.common.model.FileUploaded;
+import com.lwoptl.common.visit.Visitor;
+import com.lwoptl.common.visit.VisitorUtil;
 import com.lwoptl.common.kit.ExcelKit;
 import com.lwoptl.common.kit.IdKit;
 
@@ -117,8 +119,8 @@ public class FileService  {
 	 *            附件关联对象Id
 	 * @return
 	 */
-	public String saveFile(UploadFile uploadFile, String objectId) {
-		FileUploaded entity=this.createFileUploaded(uploadFile,objectId);
+	public String saveFile(UploadFile uploadFile, String objectId,String vs) {
+		FileUploaded entity=this.createFileUploaded(uploadFile,objectId,vs);
 		if(entity==null) {
 			return "";
 		}
@@ -127,7 +129,7 @@ public class FileService  {
 	}
 
 	public String saveFile(UploadFile uf) {
-		return this.saveFile(uf, null);
+		return this.saveFile(uf, null,null);
 	}
 
 	/**
@@ -137,7 +139,7 @@ public class FileService  {
 	 * @return
 	 */
 	public List<String> saveFiles(List<UploadFile> list) {
-		return this.saveFiles(list,null);
+		return this.saveFiles(list,null,null);
 	}
 
 	/**
@@ -148,11 +150,11 @@ public class FileService  {
 	 *            附件关联对象Id
 	 * @return
 	 */
-	public List<String> saveFiles(List<UploadFile> list, String objectId) {
+	public List<String> saveFiles(List<UploadFile> list, String objectId,String vs) {
 		List<String> results = new ArrayList<String>();
 		List<FileUploaded> modelList=new ArrayList<>();
 		for (UploadFile uf : list) {
-			FileUploaded entity=createFileUploaded(uf, objectId);
+			FileUploaded entity=createFileUploaded(uf, objectId,vs);
 			if(entity!=null){
 				modelList.add(entity);
 				results.add(entity.getUrl());			
@@ -298,7 +300,7 @@ public class FileService  {
 	 * @param objectId
 	 * @return
 	 */
-	private FileUploaded createFileUploaded(UploadFile uploadFile, String objectId){
+	private FileUploaded createFileUploaded(UploadFile uploadFile, String objectId,String vs){
 		if(uploadFile==null) {
 			return null;
 		}
@@ -327,7 +329,7 @@ public class FileService  {
 			date = "";
 			rename = fileName.substring(0, fileName.indexOf("."));
 		}
-
+	
 		// 保存记录
 		FileUploaded fileUpload = new FileUploaded();
 		fileUpload.setId(IdKit.createIdWorker());
@@ -337,6 +339,7 @@ public class FileService  {
 		fileUpload.setCreateTime(new Date());
 		fileUpload.setObjectId(objectId);
 		fileUpload.setUrl(date + "/" + rename);
+		fileUpload.setCreateBy(vs);
 		return fileUpload;
 	}
 

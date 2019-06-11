@@ -27,8 +27,10 @@ import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.server.undertow.UndertowServer;
 import com.jfinal.json.FastJsonFactory;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.SqlReporter;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
+import com.jfinal.plugin.activerecord.dialect.OracleDialect;
 
 public class MainConfig extends JFinalConfig {
 
@@ -89,16 +91,23 @@ public class MainConfig extends JFinalConfig {
 	@Override
 	public void configPlugin(Plugins me) {
 		// 配置数据库连接池插件
-		DruidPlugin dbPlugin = new DruidPlugin(p.get("jdbcUrl"), p.get("user"), p.get("password").trim());
+		DruidPlugin mainDbplugin = new DruidPlugin(p.get("jdbcUrl"), p.get("ModelName"), p.get("ModeWW").trim());
+		DruidPlugin orcDbplugin = new DruidPlugin(p.get("oracle.url"), p.get("oracle.ModelName"), p.get("oracle.ModeWW").trim(),p.get("oracle.driver").trim());
 
 		/** 配置druid监控 **/
-		dbPlugin.addFilter(new StatFilter());
+		mainDbplugin.addFilter(new StatFilter());
 		WallFilter wall = new WallFilter();
 		wall.setDbType(p.get("dbType"));
-		dbPlugin.addFilter(wall);
+		mainDbplugin.addFilter(wall);
+		
+		/** 配置oracle  druid监控 **/
+		orcDbplugin.addFilter(new StatFilter());
+		WallFilter wallorc = new WallFilter();
+		wallorc.setDbType(p.get("dbType2"));
+		orcDbplugin.addFilter(wallorc);
 
 		// orm映射 配置ActiveRecord插件
-		ActiveRecordPlugin arp=new ActiveRecordPlugin(dbPlugin);
+		ActiveRecordPlugin arp=new ActiveRecordPlugin("mysql",mainDbplugin);
 		//sql模板
 		arp.getEngine().setSourceFactory(new ClassPathSourceFactory());
 		arp.addSqlTemplate(WebContant.sqlTemplate);
@@ -107,14 +116,23 @@ public class MainConfig extends JFinalConfig {
 		arp.setShowSql(p.getBoolean("devMode"));
 
 		arp.setDialect(new MysqlDialect());
-		dbPlugin.setDriverClass(p.get("driverClass"));
+		//设置Oracle数据库方言
+		ActiveRecordPlugin orcArp=new ActiveRecordPlugin("oracle",orcDbplugin);
+		orcArp.setDialect(new OracleDialect());
+		orcArp.setContainerFactory(new CaseInsensitiveContainerFactory());//忽略大小写
+		mainDbplugin.setDriverClass(p.get("driverClass"));
+		// sql输出到日志
+		orcArp.setShowSql(p.getBoolean("devMode"));
+		
 		/******** 在此添加数据库 表-Model 映射 *********/
 		_MappingKit.mapping(arp);
 		
 		
 		// 添加到插件列表中
-		me.add(dbPlugin);
+		me.add(mainDbplugin);
 		me.add(arp);
+		me.add(orcDbplugin);
+		me.add(orcArp);
 		// 配置缓存插件
 		me.add(new EhCachePlugin());
 						

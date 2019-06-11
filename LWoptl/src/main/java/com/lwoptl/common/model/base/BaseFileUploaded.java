@@ -72,13 +72,13 @@ public abstract class BaseFileUploaded<M extends BaseFileUploaded<M>> extends Mo
 		return getStr("url");
 	}
 
-	public M setTa(java.lang.String ta) {
-		set("ta", ta);
+	public M setCreateBy(java.lang.String createBy) {
+		set("create_by", createBy);
 		return (M)this;
 	}
 	
-	public java.lang.String getTa() {
-		return getStr("ta");
+	public java.lang.String getCreateBy() {
+		return getStr("create_by");
 	}
 
 }
